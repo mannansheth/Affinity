@@ -12,10 +12,11 @@ function Landing({ onDataLoaded }) {
   const navigate = useNavigate();
   const [status, setStatus] = useState('idle');
   const [guideOpen, setGuideOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState('iOS'); // idle | loading | error
+  const [activeTab, setActiveTab] = useState('iOS');
   const [errorMsg, setErrorMsg] = useState('');
   const [isDragging, setIsDragging] = useState(false);
   const [fileName, setFileName] = useState('');
+  const [user, setUser] = useState('');
 
   const sendToBackend = async (file) => {
     setStatus('loading');
@@ -23,7 +24,8 @@ function Landing({ onDataLoaded }) {
 
     const formData = new FormData();
     formData.append('file', file);
-    formData.append("user", "Mannan")
+    formData.append('user', user || 'Mannan');
+
     try {
       const response = await fetch('http://localhost:5000/analyze', {
         method: 'POST',
@@ -55,21 +57,15 @@ function Landing({ onDataLoaded }) {
     sendToBackend(file);
   };
 
-  const handleFileChange = (e) => {
-    handleFile(e.target.files[0]);
-  };
+  const handleFileChange = (e) => handleFile(e.target.files[0]);
 
   const handleDrop = useCallback((e) => {
     e.preventDefault();
     setIsDragging(false);
     handleFile(e.dataTransfer.files[0]);
-  }, []);
+  }, [user]);
 
-  const handleDragOver = (e) => {
-    e.preventDefault();
-    setIsDragging(true);
-  };
-
+  const handleDragOver = (e) => { e.preventDefault(); setIsDragging(true); };
   const handleDragLeave = () => setIsDragging(false);
 
   return (
@@ -97,16 +93,16 @@ function Landing({ onDataLoaded }) {
             <div className="export-guide">
               <button className="guide-toggle" onClick={() => setGuideOpen(o => !o)}>
                 <span className="guide-toggle-label">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{marginRight: 7, flexShrink: 0}}>
-                    <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ marginRight: 7, flexShrink: 0 }}>
+                    <circle cx="12" cy="12" r="10" /><line x1="12" y1="8" x2="12" y2="12" /><line x1="12" y1="16" x2="12.01" y2="16" />
                   </svg>
                   How to export your WhatsApp chat
                 </span>
                 <svg className={`guide-chevron${guideOpen ? ' guide-chevron--open' : ''}`} width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <polyline points="6 9 12 15 18 9"/>
+                  <polyline points="6 9 12 15 18 9" />
                 </svg>
               </button>
-              
+
               {guideOpen && (
                 <div className="guide-body">
                   <div className="guide-tabs">
@@ -131,7 +127,26 @@ function Landing({ onDataLoaded }) {
                 </div>
               )}
             </div>
-              <p style={{fontSize:"0.7rem", backgroundColor:"rgba(204, 255, 0, 0.4)", padding:"5px 10px", borderRadius:"10px", width:"50%", marginTop:"0"}}>Note: Only 500 latest chats will be analyzed</p>
+
+            <p style={{ fontSize: '0.7rem', backgroundColor: 'rgba(204, 255, 0, 0.4)', padding: '5px 10px', borderRadius: '10px', width: '50%', marginTop: '0', marginBottom: '20px' }}>
+              Note: Only 500 latest chats will be analyzed
+            </p>
+
+            {/* Name input */}
+            <div className="name-input-wrap">
+              <svg className="name-input-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                <circle cx="12" cy="7" r="4" />
+              </svg>
+              <input
+                className="name-input"
+                placeholder="Your name"
+                value={user}
+                onChange={e => setUser(e.target.value)}
+              />
+            </div>
+
+            {/* Drop zone */}
             <div
               className={`dropzone${isDragging ? ' dropzone--active' : ''}${status === 'error' ? ' dropzone--error' : ''}`}
               onDrop={handleDrop}
@@ -155,12 +170,7 @@ function Landing({ onDataLoaded }) {
                 </div>
               ) : (
                 <div className="dropzone-prompt">
-                  <svg
-                    className="upload-icon"
-                    width="32" height="32" viewBox="0 0 24 24"
-                    fill="none" stroke="currentColor"
-                    strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"
-                  >
+                  <svg className="upload-icon" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
                     <polyline points="17 8 12 3 7 8" />
                     <line x1="12" y1="3" x2="12" y2="15" />

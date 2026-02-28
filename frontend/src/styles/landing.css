@@ -99,283 +99,48 @@
   color: #64748b;
   line-height: 1.7;
   font-family: 'Helvetica Neue', Arial, sans-serif;
-  margin: 0 0 36px;
+  margin: 0 0 20px;
   font-weight: 400;
 }
 
-/* ─── Drop Zone ──────────────────────────────────────────────────────────── */
+/* ─── Name Input ─────────────────────────────────────────────────────────── */
 
-.dropzone {
-  border: 1px dashed rgba(255, 255, 255, 0.12);
-  border-radius: 4px;
-  padding: 40px 24px;
-  text-align: center;
-  cursor: pointer;
-  transition: border-color 0.2s ease, background 0.2s ease;
-  margin-bottom: 12px;
-  background: rgba(255, 255, 255, 0.02);
-}
-
-.dropzone:hover {
-  border-color: rgba(255, 255, 255, 0.2);
-  background: rgba(255, 255, 255, 0.03);
-}
-
-.dropzone--active {
-  border-color: #3b82f6;
-  background: rgba(59, 130, 246, 0.06);
-}
-
-.dropzone--error {
-  border-color: rgba(239, 68, 68, 0.4);
-}
-
-.dropzone-prompt {
+.name-input-wrap {
+  position: relative;
   display: flex;
-  flex-direction: column;
   align-items: center;
+  margin-bottom: 16px;
 }
 
-.upload-icon {
-  color: #94a3b8;
-  margin-bottom: 12px;
-  display: block;
-}
-
-.upload-label {
-  font-size: 14px;
-  color: #94a3b8;
-  font-family: 'Helvetica Neue', Arial, sans-serif;
-  margin: 0 0 6px;
-}
-
-.upload-link {
-  color: #3b82f6;
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  cursor: pointer;
-}
-
-.upload-hint {
-  font-size: 12px;
+.name-input-icon {
+  position: absolute;
+  left: 14px;
   color: #334155;
-  font-family: 'Helvetica Neue', Arial, sans-serif;
-  margin: 0;
-}
-
-/* ─── Loading State ──────────────────────────────────────────────────────── */
-
-.dropzone-loading {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-
-.spinner {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  border: 2px solid rgba(255, 255, 255, 0.1);
-  border-top-color: #3b82f6;
-  animation: spin 0.7s linear infinite;
-  margin-bottom: 12px;
-}
-
-.loading-text {
-  font-size: 14px;
-  color: #94a3b8;
-  font-family: 'Helvetica Neue', Arial, sans-serif;
-  margin: 0 0 4px;
-}
-
-.loading-subtext {
-  font-size: 12px;
-  color: #475569;
-  font-family: 'Helvetica Neue', Arial, sans-serif;
-  margin: 0;
-}
-
-/* ─── Error ──────────────────────────────────────────────────────────────── */
-
-.error-text {
-  font-size: 13px;
-  color: #ef4444;
-  font-family: 'Helvetica Neue', Arial, sans-serif;
-  margin: 4px 0 24px;
-}
-
-/* ─── Features ───────────────────────────────────────────────────────────── */
-
-.features {
-  margin-top: 36px;
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
-  padding-top: 28px;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-}
-
-.feature-row {
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-}
-
-.feature-dot {
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: #3b82f6;
-  margin-top: 7px;
+  pointer-events: none;
   flex-shrink: 0;
 }
 
-.feature-label {
-  font-size: 13px;
-  color: #cbd5e1;
-  font-family: 'Helvetica Neue', Arial, sans-serif;
-  font-weight: 600;
-  letter-spacing: 0.01em;
-}
-
-.feature-desc {
-  font-size: 13px;
-  color: #475569;
-  font-family: 'Helvetica Neue', Arial, sans-serif;
-}
-
-/* ─── Footer ─────────────────────────────────────────────────────────────── */
-
-.landing-footer {
-  margin-top: 32px;
-  font-size: 12px;
-  color: #1e293b;
-  font-family: 'Helvetica Neue', Arial, sans-serif;
-  letter-spacing: 0.05em;
-}
-
-/* ─── Responsive ─────────────────────────────────────────────────────────── */
-
-@media (max-width: 600px) {
-  .landing-card-inner {
-    padding: 32px 24px 28px;
-  }
-
-  .landing-headline {
-    font-size: 24px;
-  }
-
-  .landing-wordmark {
-    font-size: 22px;
-  }
-} 
-/* ─── Root & Background ─────────────────────────────────────────────────── */
-
-.landing-root {
-  min-height: 100vh;
-  background: #0a0f1a;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: 'Georgia', 'Times New Roman', serif;
-  position: relative;
-  overflow: hidden;
-}
-
-.landing-grid-overlay {
-  position: absolute;
-  inset: 0;
-  background-image:
-    linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
-  background-size: 48px 48px;
-  pointer-events: none;
-}
-
-/* ─── Wrapper ────────────────────────────────────────────────────────────── */
-
-.landing-wrapper {
-  position: relative;
-  z-index: 1;
+.name-input {
   width: 100%;
-  max-width: 620px;
-  padding: 60px 24px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-/* ─── Header / Wordmark ──────────────────────────────────────────────────── */
-
-.landing-header {
-  text-align: center;
-  margin-bottom: 48px;
-}
-
-.landing-wordmark {
-  font-size: 28px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  margin-bottom: 8px;
-}
-
-.wordmark-accent {
-  color: #3b82f6;
-  font-family: 'Georgia', serif;
-  font-style: italic;
-}
-
-.wordmark-base {
-  color: #e2e8f0;
-  font-family: 'Georgia', serif;
-}
-
-.landing-tagline {
-  font-size: 13px;
-  color: #475569;
-  font-family: 'Helvetica Neue', Arial, sans-serif;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  margin: 0;
-}
-
-/* ─── Card ───────────────────────────────────────────────────────────────── */
-
-.landing-card {
-  width: 100%;
-  background: rgba(15, 23, 42, 0.9);
+  background: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 4px;
-  backdrop-filter: blur(12px);
-  box-shadow:
-    0 24px 64px rgba(0, 0, 0, 0.5),
-    inset 0 1px 0 rgba(255, 255, 255, 0.05);
-}
-
-.landing-card-inner {
-  padding: 48px 48px 40px;
-}
-
-.landing-headline {
-  font-size: 30px;
-  font-weight: 400;
-  color: #f1f5f9;
-  margin: 0 0 12px;
-  letter-spacing: -0.3px;
-  line-height: 1.2;
-}
-
-.landing-subheadline {
-  font-size: 15px;
-  color: #64748b;
-  line-height: 1.7;
+  padding: 11px 16px 11px 38px;
+  font-size: 14px;
   font-family: 'Helvetica Neue', Arial, sans-serif;
-  margin: 0 0 36px;
-  font-weight: 400;
+  color: #cbd5e1;
+  outline: none;
+  transition: border-color 0.18s ease, background 0.18s ease;
+  box-sizing: border-box;
+}
+
+.name-input::placeholder {
+  color: #334155;
+}
+
+.name-input:focus {
+  border-color: rgba(59, 130, 246, 0.5);
+  background: rgba(59, 130, 246, 0.04);
 }
 
 /* ─── Drop Zone ──────────────────────────────────────────────────────────── */
