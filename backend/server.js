@@ -15,7 +15,9 @@ const generateReminderStrategies = require('./services/reminder');
 const extractUserStyle = require("./services/userstyle");
 const evaluateRelationship = require("./services/evaluator");
 const actionOrchestrator = require("./services/actionOrchestrator");
-
+const generateTimeSeries = require("./services/timeSeries");
+const trendEngine = require("./services/trendEngine");
+const classifyAttachment = require("./services/classifyattachment");
 
 const app = express();
 app.use(cors({ origin: ["http://127.0.0.1:3000", "http://localhost:3000", "http://192.168.1.202:3000"], credentials: true }));
@@ -65,41 +67,21 @@ app.post("/analyze", upload.single("file"), async (req, res) => {
     const drift = calculateDrift(features, normalizedChat);
 
     const memoryProfile = await extractMemory(normalizedChat);
-    // const memoryProfile = {
-    //     "interests": [
-    //         "Gym",
-    //         "Turf/Sports"
-    //     ],
-    //     "important_events": [
-    //         "A 'crazy jhagda' (fight/argument) occurred at the gym between two uncles. One uncle dropped a heavy weight accidentally on another's foot, leading to an argument, demands for strict action, and a refund from the gym."
-    //     ],
-    //     "goals": [
-    //         "Uday wants to go to the gym",
-    //         "Uday wants to play turf",
-    //         "Uday wants Mannan to come with Ishan"
-    //     ],
-    //     "stress_points": [
-    //         "Waiting for Mannan",
-    //         "A gym incident involving a dropped weight, an argument, and a threatened gym cancellation"
-    //     ],
-    //     "unresolved_topics": [
-    //         "Mannan confirming for turf",
-    //         "Mannan's current location when Uday was waiting",
-    //         "Outcome of the gym refund demand"
-    //     ],
-    //     "recurring_themes": [
-    //         "Planning gym/sports activities",
-    //         "Checking availability and coordinating plans"
-    //     ],
-    //     "shared_interests": [
-    //         "Gym",
-    //         "Turf/Sports"
-    //     ]
-    // }
+
     const staleTopics = getStaleTopics(memoryProfile);
-    console.log(staleTopics.length)
+
     const userStyle = extractUserStyle(normalizedChat, currentUser);
-    console.log(userStyle);
+
+    const timeSeries = generateTimeSeries(normalizedChat, sentimentScores);
+    const {
+      trendPhysics,
+      volatilitySpikes,
+      narrative,
+      recommendations
+    } = trendEngine(timeSeries, features);
+
+    const attachmentType = classifyAttachment(features, trendPhysics);
+
     const reminderActions = await generateReminderStrategies(
       staleTopics, 
       drift,
@@ -109,7 +91,7 @@ app.post("/analyze", upload.single("file"), async (req, res) => {
     const relationshipReport = evaluateRelationship({
       features,
       drift,
-      memory: memoryProfile,
+      memory: memoryProfile,  
       staleTopics
     });
     const orchestratedActions = actionOrchestrator({
@@ -123,9 +105,15 @@ app.post("/analyze", upload.single("file"), async (req, res) => {
       features,
       drift,
       memory: memoryProfile,
+      timeSeries,
+      attachmentType,          
+      trendPhysics,
+      volatilitySpikes,
+      recommendations,
       reminders: reminderActions,
       relationshipReport,
-      orchestratedActions
+      orchestratedActions,
+      narrative
     });
 
   } catch (error) {

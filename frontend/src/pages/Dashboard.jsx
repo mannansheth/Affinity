@@ -7,104 +7,14 @@ import MetricsSection from '../components/MetricsSection';
 import ActionSection from '../components/ActionSection';
 import ReminderSection from '../components/ReminderSection';
 import '../styles/dashboard.css';
+import TrendSection from '../components/TrendSection';
 
-// Mock API data for testing
-const mockData = {
-  "status": "success",
-  "features": {
-    "avgResponseDelay": 10628.12749003984,
-    "avgMessageLength": 33.128,
-    "avgSentiment": -0.098,
-    "sentimentTrend": -0.036000000000000004,
-    "lengthTrend": 6.376000000000001,
-    "vulnerabilityMentions": 0,
-    "conflictSignals": 0,
-    "planningSignals": 12,
-    "initiationCount": {
-      "Mannan": 126,
-      "Uday": 126
-    }
-  },
-  "drift": {
-    "driftScore": 26,
-    "state": "Stable"
-  },
-  "memory": {
-    "interests": [
-      "Gym",
-      "Football",
-      "Statistics",
-      "Data Analysis"
-    ],
-    "important_events": [
-      "Tuesday presentation",
-      "College task search"
-    ],
-    "goals": [
-      "Complete phone map UI",
-      "Complete desktop UI map",
-      "Add more reports to phone UI",
-      "Add reshared reports",
-      "Add filter to phone map UI",
-      "Complete civic issue dismissal feature",
-      "Understand statistical concepts"
-    ],
-    "stress_points": [
-      "Difficulty understanding statistical concepts",
-      "Time constraints",
-      "Urgent tasks",
-      "Leg pain"
-    ],
-    "unresolved_topics": [
-      "Clarification on statistical calculations",
-      "Details of Tuesday presentation",
-      "Specifics of college task"
-    ],
-    "recurring_themes": [
-      "Meeting scheduling",
-      "Task completion",
-      "Collaboration on a project (civic issue reporting app)",
-      "Time management"
-    ],
-    "shared_interests": [
-      "Project collaboration (civic issue reporting app)"
-    ]
-  },
-  "reminders": [
-    {
-      "topic": "Details of Tuesday presentation",
-      "urgency": "medium",
-      "suggested_message": "hi, just checking on the tuesday presentation. kya updates hain?"
-    }
-  ],
-  "relationshipReport": {
-    "healthScore": 100,
-    "riskLevel": "Strong",
-    "keySignals": [
-      "Pending unresolved topics",
-      "Strong shared interests detected",
-      "Active future planning observed"
-    ],
-    "primaryRecommendation": "Maintain current engagement rhythm"
-  },
-  "orchestratedActions": {
-    "primaryAction": {
-      "type": "reel_suggestion",
-      "reel_suggestion": [
-        "Gym",
-        "Football",
-        "Statistics",
-        "Data Analysis",
-        "Project collaboration (civic issue reporting app)"
-      ]
-    },
-    "secondaryAction": null,
-    "reasoning": "Healthy connection — maintain engagement"
-  }
-};
 
 function Dashboard({ data }) {
   const navigate = useNavigate();
+  if (!data || data === null || data === undefined) {
+    navigate("/")
+  }
   const displayData = data || mockData;
 
   if (!displayData) {
@@ -133,7 +43,14 @@ function Dashboard({ data }) {
       <main className="dashboard-content">
         {/* Section 1: Health Overview */}
         <HealthOverview report={displayData.relationshipReport} drift={displayData.drift} />
-
+        <TrendSection
+  timeSeries={data.timeSeries}
+  trendPhysics={data.trendPhysics}
+  recommendations={data.recommendations}
+  narrative={data.narrative}
+  volatilitySpikes={data.volatilitySpikes}
+  attachmentStyle={data.attachmentType}
+/>
         {/* Section 2: Key Signals */}
         <SignalTags signals={displayData.relationshipReport.keySignals} />
 

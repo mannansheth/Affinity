@@ -6,9 +6,9 @@ function MetricsSection({ features, drift }) {
     return num.toFixed(decimals);
   };
 
-  const formatDelay = (ms) => {
-    const seconds = (ms / 1000).toFixed(1);
-    return `${seconds}s`;
+  const formatDelay = (s) => {
+    const mins = (s / 60).toFixed(1);
+    return `${mins}mins`;
   };
 
   const getSentimentLabel = (sentiment) => {

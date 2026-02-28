@@ -12,12 +12,11 @@ def parse_whatsapp_chat_from_text(raw_text):
     messages = []
     current_message = None
 
-    # Universal WhatsApp message pattern
     message_pattern = re.compile(
         r'^\[?'
         r'(\d{1,2}/\d{1,2}/\d{2,4}),\s'
-        r'(\d{1,2}:\d{2}(?::\d{2})?\s?[APMapm]{2}?)'
-        r'\]?\s?-?\s?'
+        r'(\d{1,2}:\d{2}(?::\d{2})?(?:\s?[APMapm]{2})?)'
+        r'\]?\s?(?:-\s)?'
         r'([^:]+):\s'
         r'(.*)'
     )
@@ -27,10 +26,12 @@ def parse_whatsapp_chat_from_text(raw_text):
     for line in lines:
         line = line.strip()
 
+        # 🔥 normalize weird WhatsApp spaces
+        line = line.replace("\u202f", " ").replace("\u00a0", " ")
+
         match = message_pattern.match(line)
 
         if match:
-            # Save previous valid message
             if current_message:
                 msg_text = current_message["message"].strip()
                 if msg_text and msg_text != "<Media omitted>":
@@ -38,11 +39,9 @@ def parse_whatsapp_chat_from_text(raw_text):
 
             date_str, time_str, sender, message = match.groups()
 
-            # --- Dynamic Timestamp Parsing ---
             try:
                 year_part = date_str.split("/")[-1]
 
-                # Detect 12hr vs 24hr
                 is_12hr = "AM" in time_str.upper() or "PM" in time_str.upper()
                 has_seconds = time_str.count(":") == 2
 
@@ -57,10 +56,7 @@ def parse_whatsapp_chat_from_text(raw_text):
                     else:
                         fmt = "%d/%m/%Y %H:%M:%S" if has_seconds else "%d/%m/%Y %H:%M"
 
-                timestamp = datetime.strptime(
-                    f"{date_str} {time_str}",
-                    fmt
-                )
+                timestamp = datetime.strptime(f"{date_str} {time_str}", fmt)
 
             except:
                 continue
@@ -72,17 +68,14 @@ def parse_whatsapp_chat_from_text(raw_text):
             }
 
         else:
-            # Multiline continuation
             if current_message:
                 current_message["message"] += " " + line
 
-    # Append last message if valid
     if current_message:
         msg_text = current_message["message"].strip()
         if msg_text and msg_text != "<Media omitted>":
             messages.append(current_message)
 
-    # Return last 500 messages
     return messages[-500:]
 
 

@@ -79,8 +79,8 @@ function Landing({ onDataLoaded }) {
       <div className="landing-wrapper">
         <header className="landing-header">
           <div className="landing-wordmark">
-            <span className="wordmark-accent">Auto</span>
-            <span className="wordmark-base">Pilot</span>
+            <span className="wordmark-accent">Affi</span>
+            <span className="wordmark-base">nity</span>
           </div>
           <p className="landing-tagline">Relationship intelligence, distilled.</p>
         </header>
