@@ -23,7 +23,7 @@ function Landing({ onDataLoaded }) {
 
     const formData = new FormData();
     formData.append('file', file);
-    formData.append("user", "Umang")
+    formData.append("user", "Mannan")
     try {
       const response = await fetch('http://localhost:5000/analyze', {
         method: 'POST',
@@ -79,8 +79,8 @@ function Landing({ onDataLoaded }) {
       <div className="landing-wrapper">
         <header className="landing-header">
           <div className="landing-wordmark">
-            <span className="wordmark-accent">Affi</span>
-            <span className="wordmark-base">nity</span>
+            <span className="wordmark-accent">Aff</span>
+            <span className="wordmark-base">inity</span>
           </div>
           <p className="landing-tagline">Relationship intelligence, distilled.</p>
         </header>
