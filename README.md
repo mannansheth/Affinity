@@ -24,6 +24,9 @@ cd Affinity
 
 ---
 
+Configure environment variables in backend (check .env.example)
+
+
 ## 🟢 Terminal 1 — Python Backend (Flask)
 
 ```bash
