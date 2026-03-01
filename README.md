@@ -1,5 +1,5 @@
 # Affinity
-
+### Demo video provided
 Affinity is a multi-layer conversational intelligence system that analyzes WhatsApp chat exports to model emotional dynamics, relational health, memory structures, and behavioral patterns.
 
 It moves beyond sentiment analysis into temporal, psychological, and proactive conversational modeling.
